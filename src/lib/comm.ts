@@ -47,6 +47,7 @@ export class Comm {
         data.clientInfo = {
             host: location.origin,
             port: location.port,
+            type: 'devtool-client',
         };
         if (this.type === 'ws' && this.commIns) {
             this.commIns.send(JSON.stringify({ event, data }));
