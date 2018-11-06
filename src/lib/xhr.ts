@@ -1,3 +1,1 @@
-import { Comm } from './comm';
-
-export const overrideXhr = (comm: Comm) => {};
+export const overrideXhr = (hook?: () => void) => {};

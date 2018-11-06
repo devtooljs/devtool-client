@@ -26,8 +26,8 @@ export const initSocket = (options: IInitSocketRawOptions) => {
             options.onDisconnected && options.onDisconnected();
         };
 
-        socket.onmessage = ({ data }) => {
-            getConsole().log(data);
+        socket.onmessage = res => {
+            const { data } = res;
             const { event, value } = JSON.parse(data);
             options.onEvent(event, value);
         };

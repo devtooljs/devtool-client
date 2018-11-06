@@ -9,7 +9,7 @@ export interface IDevToolClientOptions {
      * 通信方式
      * 默认 websocket
      */
-    comm?: 'ws' | 'http';
+    commType?: 'ws' | 'http';
 
     /**
      * ws 配置
@@ -19,7 +19,7 @@ export interface IDevToolClientOptions {
 
 export const devTool = {
     init: async (opts: IDevToolClientOptions = {}) => {
-        const commType = opts.comm || 'ws';
+        const commType = opts.commType || 'ws';
         const comm = new Comm(commType);
         const onEvent = (event: string, data) => {
             if (event === 'statement') {
@@ -30,8 +30,11 @@ export const devTool = {
             ? await comm.initSocket(opts.wsConfig, onEvent)
             : comm.initHttp();
 
+        // 发送已连接事件
+        comm.send('connected', {});
+
         // 重写原生方法
-        overrideConsole(comm, val => comm.send('console', val));
-        overrideXhr(comm);
+        overrideConsole(val => comm.send('console', val));
+        overrideXhr();
     },
 };

@@ -1,9 +1,8 @@
-import { Comm } from './comm';
-
 const myConsole: any = {};
 
+const getConsole = () => (myConsole.log ? myConsole : console) as Console;
+
 export const overrideConsole = (
-    comm: Comm,
     hook?: (obj: { key: string; arguments: IArguments }) => void,
 ) => {
     const consoleMethods = Object.keys(console);
@@ -17,7 +16,5 @@ export const overrideConsole = (
         }
     });
 };
-
-const getConsole = () => (myConsole.log ? myConsole : console) as Console;
 
 export { getConsole };

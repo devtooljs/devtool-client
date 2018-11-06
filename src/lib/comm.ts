@@ -7,8 +7,8 @@ import { initSocket, IInitSocketRawOptions } from '../lib/socket';
 import { getConsole } from './console';
 
 export class Comm {
-    type: CommType;
-    commIns: WebSocket | undefined;
+    private type: CommType;
+    private commIns: WebSocket | undefined;
 
     constructor(type: CommType) {
         this.type = type;
@@ -44,6 +44,10 @@ export class Comm {
     }
 
     send(event: string, data: any) {
+        data.clientInfo = {
+            host: location.origin,
+            port: location.port,
+        };
         if (this.type === 'ws' && this.commIns) {
             this.commIns.send(JSON.stringify({ event, data }));
         }
