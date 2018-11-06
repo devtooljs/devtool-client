@@ -12,7 +12,6 @@ export default {
     plugins: [
         typescript({
             tsconfig: 'tsconfig.json',
-            // tsconfigOverride: override,
         }),
         resolve(),
     ],
