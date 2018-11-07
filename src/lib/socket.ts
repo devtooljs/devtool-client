@@ -28,8 +28,8 @@ export const initSocket = (options: IInitSocketRawOptions) => {
 
         socket.onmessage = res => {
             const { data } = res;
-            const { event, value } = JSON.parse(data);
-            options.onEvent(event, value);
+            const parsed = JSON.parse(data);
+            options.onEvent(parsed.event, parsed.data);
         };
     });
 };

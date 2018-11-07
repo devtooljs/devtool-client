@@ -31,7 +31,7 @@ export const devTool = {
             : comm.initHttp();
 
         // 发送已连接事件
-        comm.send('connected', {});
+        comm.send('clientConnected', {});
 
         // 重写原生方法
         overrideConsole(val => comm.send('console', val));
