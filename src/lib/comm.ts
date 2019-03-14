@@ -5,17 +5,19 @@
 import { CommType } from '../../types/types';
 import { initSocket, IInitSocketRawOptions } from '../lib/socket';
 import { getConsole } from './console';
+import { IDevToolClientOptions } from '../index';
 
 export class Comm {
-    private type: CommType;
+    private type: CommType = 'ws';
     private commIns: WebSocket | undefined;
 
-    constructor(type: CommType) {
-        this.type = type;
-        if (this.type === 'ws') {
-        } else {
-            throw Error('Only supporting websocket for now!');
-        }
+    constructor() {}
+
+    async init(options: IDevToolClientOptions, onEvnet) {
+        this.type = options.commType || 'ws';
+        if (this.type === 'ws')
+            return await this.initSocket(options.wsConfig, onEvnet);
+        if (this.type === 'http') return await this.initHttp();
     }
 
     async initSocket(opts, onEvent) {
@@ -43,9 +45,9 @@ export class Comm {
         return this;
     }
 
-    send(event: string, data: any) {
+    send(event: string, data: any = {}) {
         data.clientInfo = {
-            host: location.origin,
+            url: location.href,
             port: location.port,
             type: 'devtool-client',
         };

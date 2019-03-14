@@ -19,19 +19,15 @@ export interface IDevToolClientOptions {
 
 export const devTool = {
     init: async (opts: IDevToolClientOptions = {}) => {
-        const commType = opts.commType || 'ws';
-        const comm = new Comm(commType);
+        const comm = new Comm();
         const onEvent = (event: string, data) => {
             if (event === 'statement') {
                 parseStatement(data);
             }
         };
-        commType === 'ws'
-            ? await comm.initSocket(opts.wsConfig, onEvent)
-            : comm.initHttp();
-
+        await comm.init(opts, onEvent);
         // 发送已连接事件
-        comm.send('clientConnected', {});
+        comm.send('clientConnected');
 
         // 重写原生方法
         overrideConsole(val => comm.send('console', val));
